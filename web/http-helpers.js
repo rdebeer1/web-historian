@@ -11,35 +11,25 @@ exports.headers = {
 };
 
 exports.serveAssets = function(res, asset, callback) {
-  // if (req.url === '/' || req.ulr === '/index.html') {
-    // console.log('res ', res);
-    console.log();
-    fs.readFile(asset);
-    // , function(err, data) {
-    //   if (err) {
-    //     console.log('done fucked up');
-    //     // callback ? callback() : this.send404(res);
-    //   } else {
-    //     this.respond(res, data);
-    //   }
-    // }); 
-    
-      //path.basename())
-  
-  // Write some code here that helps serve up your static files!
-  // (Static files are things like html (yours or archived from others...),
-  // css, or anything that doesn't change often.)
-  
-  //look in public and serve those files
-    //file does not exist in public - look in archive and serve 
-      //file does not exist in archive - alternate response or 404
-      //serve archived files
-    //serve public files
+  fs.readFile(archive.paths.siteAssets + asset, function (err, data) {
+    if (err) {
+      fs.readFile(archive.paths.archivedSites + asset, function (err, data) {
+        if (err) {
+          callback ? callback() : exports.send404(res);
+        } else {
+          exports.respond(res, data);
+        }
+      });
+    } else {
+      exports.respond(res, data);
+    }
+  });
 };
+
 
 exports.respond = (res, data, status) => {
   status = status || 200;
-  res.writeHead(status, this.headers);
+  res.writeHead(status, exports.headers);
   res.end(data);
 };
 
