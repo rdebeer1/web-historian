@@ -2,10 +2,26 @@
 <html>
 <head>
   <link rel="stylesheet" type="text/css" href="styles.css" />
+  <script>
+    var submit = function (message) {
+      $.ajax({
+        url: 'http://127.0.0.1:8080',
+        type: 'POST',
+        data: JSON.stringify(message),
+        contentType: 'application/JSON',
+        success: function(data){
+          console.log('message sent', data);
+        },
+        error: function(error) {
+          console.log('error while sending site', error);
+        }
+      });
+    };
+  </script>
 </head>
 <body>
   Enter a URL here:
-  <form method="POST">
+  <form action="submit" method="POST">
     <input type="input" name="url"></input>
   </form>
 </body>

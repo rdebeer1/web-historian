@@ -28,7 +28,6 @@ exports.initialize = function(pathsObj) {
 exports.readListOfUrls = function(callback) {
   fs.readFile(exports.paths.list, 'utf8', function (err, data) {
     callback(data.split('\n'));
-    // return data.split('\n');
   });
 };
 
@@ -48,8 +47,23 @@ exports.addUrlToList = function(url, callback) {
 };
 
 exports.isUrlArchived = function(url, callback) {
+  fs.stat(exports.paths.archivedSites + '/' + url, (err, stats) => {
+    if (err) {
+      callback(false);
+    } else {
+      callback(stats.isFile()); 
+    }
+  });
 };
 
 exports.downloadUrls = function(urls) {
-  
+  urls.forEach( (url) => {
+    var fileObj = exports.paths.archivedSites + '/' + url;
+    var file = fs.createWriteStream(fileObj);
+    http.get('http://' + url, (res) => {
+      res.pipe(file);
+    }).on('error', (e) => {
+      console.log('got error: ' + e.message);
+    });
+  });
 };

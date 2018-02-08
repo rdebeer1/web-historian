@@ -19,10 +19,10 @@ var actions = {
     });
     req.on('end', () => {
       var path = body.substring(4);
-      // console.log('body', body);
-      // console.log('path', path);
+      console.log('body', body);
+      console.log('path', path);
       archive.addUrlToList(path, () => {
-        console.log('hello');
+        console.log('addUrlToList ', path);
         helper.redirect(res, '/loading.html');
       });
       // res.end('received the message');
