@@ -11,9 +11,10 @@ exports.headers = {
 };
 
 exports.serveAssets = function(res, asset, callback) {
-  fs.readFile(archive.paths.siteAssets + asset, function (err, data) {
+  var convert = 'utf8';
+  fs.readFile(archive.paths.siteAssets + asset, convert, function (err, data) {
     if (err) {
-      fs.readFile(archive.paths.archivedSites + asset, function (err, data) {
+      fs.readFile(archive.paths.archivedSites + asset, convert, function (err, data) {
         if (err) {
           callback ? callback() : exports.send404(res);
         } else {
@@ -26,6 +27,7 @@ exports.serveAssets = function(res, asset, callback) {
   });
 };
 
+// exports.
 
 exports.respond = (res, data, status) => {
   status = status || 200;
@@ -35,6 +37,12 @@ exports.respond = (res, data, status) => {
 
 exports.send404 = (res) => {
   exports.respond(res, 'Not Found', 404);
+};
+
+exports.redirect = (res, loc, status) => {
+  status = status || 302;
+  res.writeHead(status, { Location: loc });
+  res.end();
 };
  
 

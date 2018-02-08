@@ -22,9 +22,10 @@ var actions = {
       // console.log('body', body);
       // console.log('path', path);
       archive.addUrlToList(path, () => {
-        
+        console.log('hello');
+        helper.redirect(res, '/loading.html');
       });
-      res.end('received the message');
+      // res.end('received the message');
     });
   }
 };
